@@ -8,6 +8,9 @@ AcademicIntegrity::Application.routes.draw do
 
   resources :course
 
+  resources :policy
+  get "policy/:id/text" => 'policy#text'
+
   # You can have the root of your site routed with "root"
   root 'lti#index'
 

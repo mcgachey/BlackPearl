@@ -1,0 +1,9 @@
+<div id="main">
+  <div class="title"><%= @policy.title %></div>
+  <div class="policy_body"><%=raw @policy.text %></div>
+</div>
+
+<%= if @course 
+      link_to("Back to #{@course.context_label}", course_path(@course))
+    end
+%>

@@ -1,0 +1,10 @@
+<%= form_for :policy, url: policy_path(@policy) do |f| %>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+ 
+  <div class="text_edit_area">
+    <%= f.label :text %>
+    <%= f.text_area :text %>
+  </div> 
+    <%= f.submit %>
+<% end %>

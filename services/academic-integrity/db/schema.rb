@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131202202258) do
+ActiveRecord::Schema.define(version: 20131204212407) do
 
   create_table "courses", force: true do |t|
     t.string   "context_id"
@@ -19,6 +19,18 @@ ActiveRecord::Schema.define(version: 20131202202258) do
     t.string   "context_title"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "policy_id"
+  end
+
+  create_table "policies", force: true do |t|
+    t.string   "title"
+    t.string   "text"
+    t.string   "creator_id"
+    t.string   "creator_course_id"
+    t.string   "creator_course_label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_public"
   end
 
 end
