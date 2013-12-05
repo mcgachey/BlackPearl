@@ -1,7 +1,5 @@
 class PolicyController < ApplicationController
 
-  rescue_from ActiveRecord::RecordNotFound, :with => :handle_missing_record
-
   def show
     @policy = Policy.find(params[:id])
   end
@@ -54,14 +52,6 @@ class PolicyController < ApplicationController
   end
 
   private
-
-  def handle_missing_record
-    render 'public/404.html', status: :not_found and return
-  end
-
-  def verify_permissions
-    return (session[:roles] & [:instructor, :administrator, :content_developer]).any?
-  end
 
   def verify_params
     return params[:policy] && params[:policy][:text] && params[:policy][:title]

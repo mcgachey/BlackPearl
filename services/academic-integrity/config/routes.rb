@@ -7,6 +7,7 @@ AcademicIntegrity::Application.routes.draw do
   resources :lti
 
   resources :course
+  post "course/:id/return_to_lms" => 'course#return_to_lms'
 
   resources :policy
   get "policy/:id/text" => 'policy#text'
