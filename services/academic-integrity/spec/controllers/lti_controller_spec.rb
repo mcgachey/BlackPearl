@@ -168,20 +168,23 @@ describe LtiController do
       end
     end
 
-    def get_course_model()
+    it "creates a new course object if not already present" do
+      course = Course.new
+      Course.stub(:new).and_return(course)
+      params = get_launch_params
+      post :launch, params
+      course.id.should_not be_nil
+      course.context_label.should == (params["context_label"])
+      course.context_id.should == (params["context_id"])
+      course.context_title.should == (params["context_title"])
+    end
+
+    def get_course_model
       course = Course.new
       course.id = 42
       course.context_label = "Context Label"
       course.context_title = "Context Title"
       course
-    end
-
-    it "creates a new course object if not already present" do
-      course = get_course_model
-      Course.stub(:new).and_return(course)
-      course.should_receive(:save)
-      params = get_launch_params
-      post :launch, params
     end
 
     it "loads existing course object if one exists" do

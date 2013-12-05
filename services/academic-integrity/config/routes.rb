@@ -8,6 +8,7 @@ AcademicIntegrity::Application.routes.draw do
 
   resources :course
   post "course/:id/return_to_lms" => 'course#return_to_lms'
+  get "course/:id/iframe_view" => 'course#iframe_view'
 
   resources :policy
   get "policy/:id/text" => 'policy#text'

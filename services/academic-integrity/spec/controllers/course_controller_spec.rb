@@ -229,16 +229,42 @@ describe CourseController do
       query["return_type"][0].should == "iframe"
     end
 
-    it "passes the URL of the course view page to the redirect URL" do
+    it "passes the URL of the course iframe view page to the redirect URL" do
       url = get_redirection_url
       query = CGI.parse(url.query)
-      query["url"][0].should == course_url(@c)
+      query["url"][0].should == "#{course_url(@c)}/iframe_view"
     end
 
     it "properly appends the query string to a URL containing a query" do
       session[:ext_content_return_url] = "http://example.com/address?with=query"
       post :return_to_lms, get_launch_params.merge!({ :id => @c.id })
       response.header["Location"].count("?").should == 1
+    end
+
+  end
+
+  context "Show course in an iframe" do
+
+    it "fails gracefully if the course does not exist" do
+      Course.stub(:find).and_raise(ActiveRecord::RecordNotFound.new)
+      launch_expecting_failure(:get, :iframe_view, { :id => 0 }, 404)
+    end
+
+    it "finds the correct policy for the course" do
+      get :iframe_view, { :id => @c.id }
+      assigns(:policy).should == @p
+    end
+
+    it "doesn't find a policy if one is not set" do
+      @c.policy_id = nil
+      @c.save
+      get :iframe_view, { :id => @c.id }
+      assigns(:policy).should == nil
+    end
+
+    it "renders the course iframe page" do
+      get :iframe_view, { :id => @c.id }
+      response.should render_template("iframe_view")
     end
 
   end

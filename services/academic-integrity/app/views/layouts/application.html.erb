@@ -5,6 +5,10 @@
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+  <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+  <script>
+          tinymce.init({selector:'textarea'});
+  </script>
 </head>
 <body>
 

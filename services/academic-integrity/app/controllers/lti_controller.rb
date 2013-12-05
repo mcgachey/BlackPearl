@@ -1,5 +1,7 @@
 class LtiController < ApplicationController
 
+  skip_before_filter  :verify_authenticity_token
+
   class BadInput < StandardError
     attr_reader :message, :params
     def initialize(data)
@@ -41,6 +43,9 @@ class LtiController < ApplicationController
     course = Course.find_by context_id: params[:context_id]
     if course == nil
       course = Course.new
+      course.context_id = params[:context_id]
+      course.context_label = params[:context_label]
+      course.context_title = params[:context_title]
       course.save
     end
 

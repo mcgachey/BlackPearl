@@ -1,16 +1,16 @@
 Academic integrity policy for <%= @course.context_label %> (<%= @course.context_title %>)
 <P>
-<% if @selected_policy %>
-    <div class="title"><%= @selected_policy.title %></div>
-    <div class="policy_body"><%=raw @selected_policy.text %></div>
+<% if @policy %>
+    <div class="title"><%= @policy.title %></div>
+    <div class="policy_body"><%=raw @policy.text %></div>
 <% else %>
     <div class="policy_body">No policy selected</div>
 <% end %>
 <P>
 <% if @instructor %>
   <%= link_to 'Change Policy', edit_course_path(@course) %>
+  <%= form_for :course_policy, url: "#{course_path(@course)}/return_to_lms" do |f| %>
+    <%= f.submit 'Save Changes' %>
+  <% end %>
 <% end %>
 
-<%= form_for :course_policy, url: "#{course_path(@course)}/set_course_policy" do |f| %>
-    <%= f.submit 'Save Changes' %>
-<% end %>

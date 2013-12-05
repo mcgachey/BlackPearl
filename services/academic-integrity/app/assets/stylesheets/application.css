@@ -11,3 +11,20 @@
  *= require_self
  *= require_tree .
  */
+
+ body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+ }
+
+h3 {
+  font-size: 1.0em;
+}
+
+.title {
+  font-weight:bold;
+  font-size: 110%;
+}
+
+.policy_body {
+  font-size: 90%;
+}

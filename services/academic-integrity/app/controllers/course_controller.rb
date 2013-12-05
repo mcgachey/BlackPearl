@@ -5,7 +5,14 @@ class CourseController < ApplicationController
     if @course.policy_id
       @policy = Policy.find(@course.policy_id)
     end
-    @instructor = session[:roles].include?(:instructor)
+    @instructor = session[:roles] && session[:roles].include?(:instructor)
+  end
+
+  def iframe_view
+    @course = Course.find(params[:id])
+    if @course.policy_id
+      @policy = Policy.find(@course.policy_id)
+    end
   end
 
   def edit
@@ -32,7 +39,7 @@ class CourseController < ApplicationController
     render 'public/403.html', status: :forbidden and return unless verify_permissions
     course = Course.find(params[:id])
     if course.policy_id
-      url = url_for :controller => "course", :action => "show", :id => course.id
+      url = url_for :controller => "course", :action => "iframe_view", :id => course.id
       params = {
         :return_type => :iframe,
         :url => url,

@@ -1,0 +1,6 @@
+<% if @policy %>
+  <h3>Academic integrity policy</h3>
+  <div class="title"><%= @policy.title %></div>
+  <div class="policy_body"><%=raw @policy.text %></div>
+<% end %>
+

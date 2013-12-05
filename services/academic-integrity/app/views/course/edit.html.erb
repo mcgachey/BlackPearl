@@ -2,8 +2,7 @@
 
   <%= collection_select(:course, 
   :policy_id, 
-  Policy.where("is_public = ? OR creator = ? OR creator_course = ? OR creator_course_id = ?", 
-                              true, session[:user_id], session[:context_label], session[:context_id]), 
+  @policies,
   :id, 
   :title, 
   prompt: true ) %>
@@ -20,7 +19,7 @@
 <% end %>
 <P>
 <div id="policy_body_div" class="policy_body">
-<% if @selected_policy %>
-<%= raw @selected_policy.text %> <br>
+<% if @policy %>
+<%= raw @policy.text %> <br>
 <% end %>
 </div>
