@@ -86,6 +86,26 @@ describe PolicyController do
       course.policy_id.should == policy_obj.id
     end
 
+    def launch_with_missing_parameter(param)
+      params = get_launch_params
+      params["policy"][param] = ""
+      post :create, params
+    end
+
+    it "renders the new_iframe page if title or text is missing" do
+      launch_with_missing_parameter("text")
+      response.should render_template("new_iframe")
+      launch_with_missing_parameter("title")
+      response.should render_template("new_iframe")
+    end
+
+    it "creates an error message if the title or text is missing" do
+      launch_with_missing_parameter("text")
+      assigns(:error).should == "Both policy title and policy text are required."
+      launch_with_missing_parameter("title")
+      assigns(:error).should == "Both policy title and policy text are required."
+    end
+
     it "redirects to the course view page" do
       params = get_launch_params
       post :create, params

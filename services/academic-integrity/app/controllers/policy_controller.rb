@@ -6,6 +6,12 @@ class PolicyController < ApplicationController
 
   def new
     render 'public/403.html', status: :forbidden and return unless verify_permissions
+    @frame_width = session[:launch_presentation_width] ? session[:launch_presentation_width].to_i - 30 : 750
+    @frame_height = session[:launch_presentation_height] ? session[:launch_presentation_height].to_i - 30 : 750
+  end
+
+  def new_iframe
+    puts "Here"
   end
 
   def edit
@@ -18,15 +24,20 @@ class PolicyController < ApplicationController
     render 'public/403.html', status: :forbidden and return unless verify_permissions
     render 'public/400.html', status: :bad_request and return unless verify_params
 
-    policy = Policy.new(params.require(:policy).permit(:title, :text))
-    policy.creator_id = session[:user_id]
-    policy.creator_course_label = session[:context_label]
-    policy.creator_course_id = session[:context_id]
-    set_public_if_allowed(policy)
-    policy.save
+
+    @policy = Policy.new(params.require(:policy).permit(:title, :text))
+    if params[:policy][:text].length == 0 || params[:policy][:title].length == 0
+      @error = "Both policy title and policy text are required."
+      render :new_iframe and return
+    end
+    @policy.creator_id = session[:user_id]
+    @policy.creator_course_label = session[:context_label]
+    @policy.creator_course_id = session[:context_id]
+    set_public_if_allowed(@policy)
+    @policy.save
 
     course = Course.find_by(:context_id => session[:context_id])
-    course.policy_id = policy.id
+    course.policy_id = @policy.id
     course.save
 
     redirect_to course_url(course)

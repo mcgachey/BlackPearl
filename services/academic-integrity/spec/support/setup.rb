@@ -1,13 +1,19 @@
 shared_context "setup" do
-  before(:each) do
-    session[:context_id] = "contextid_123"
-    session[:context_label] = "contextlabel_123"
-    session[:context_title] = "Context Title"
-    session[:user_id] = "userid_123"
-    session[:roles] = [ :instructor ]
-    session[:ext_content_return_url] = "http://example.com/content_return_url"
-    session[:ext_content_return_types] = [ :oembed, :lti_launch_url, :url, :image_url, :iframe ]
 
+  def get_session_map
+    session_map = {}
+    session_map [:context_id] = "contextid_123"
+    session_map [:context_label] = "contextlabel_123"
+    session_map [:context_title] = "Context Title"
+    session_map [:user_id] = "userid_123"
+    session_map [:roles] = [ :instructor ]
+    session_map [:ext_content_return_url] = "http://example.com/content_return_url"
+    session_map [:ext_content_return_types] = [ :oembed, :lti_launch_url, :url, :image_url, :iframe ]
+    session_map
+  end
+
+  before(:each) do
+    get_session_map.each { |k,v| session[k] = v }
     course = Course.new
     course.context_id = session[:context_id]
     course.save
@@ -22,6 +28,7 @@ shared_context "utils" do
   end
 
   def launch_with_roles(verb, action, extra_params, roles, success)
+    get_session_map.each { |k,v| session[k] = v }
     session[:roles] = roles
     params = get_launch_params.merge(extra_params)
     if success

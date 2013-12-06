@@ -47,14 +47,15 @@ class CourseController < ApplicationController
         :height => '300'
       }
       if session[:ext_content_return_url].include?("?")
-        redirect = "#{session[:ext_content_return_url]}&#{params.to_query}"
+        @redirect_url = "#{session[:ext_content_return_url]}&#{params.to_query}"
       else
-        redirect = "#{session[:ext_content_return_url]}?#{params.to_query}"
+        @redirect_url = "#{session[:ext_content_return_url]}?#{params.to_query}"
       end
-      redirect_to redirect
     else 
-      redirect_to "#{session[:ext_content_return_url]}"
+      @redirect_url = "#{session[:ext_content_return_url]}"
     end
+    reset_session
+    redirect_to @redirect_url
   end
 
 private

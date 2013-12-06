@@ -1,0 +1,11 @@
+<% if @error %>
+  <div class="error_banner"><%= @error %></div><p>
+<% end %>
+<%= form_for :policy, url: { :action => :create } do |f| %>
+  <%= f.text_field :title, :placeholder => "Policy Title", :class => "text_field_area" %>
+ 
+  <div class="text_edit_area">
+    <%= f.text_area :text, :rows => 25 %>
+  </div> 
+    <%= f.submit %>
+<% end %>

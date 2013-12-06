@@ -28,3 +28,14 @@ h3 {
 .policy_body {
   font-size: 90%;
 }
+
+.text_field_area {
+  width: 50%;
+  height: 40px;
+  font-size: 125%;
+}
+
+.error_banner {
+  width: 100%;
+  color: red;
+}

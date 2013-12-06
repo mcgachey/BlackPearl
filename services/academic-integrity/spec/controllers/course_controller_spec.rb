@@ -204,13 +204,15 @@ describe CourseController do
     it "returns without data if no policy is selected" do
       @c.policy_id = nil
       @c.save
+      return_url = session[:ext_content_return_url]
       post :return_to_lms, get_launch_params.merge!({ :id => @c.id })
-      response.should redirect_to(session[:ext_content_return_url])
+      response.should redirect_to(return_url)
     end
 
     it "redirects to the session redirect URL if a course is selected" do
+      return_url = session[:ext_content_return_url]
       url = get_redirection_url
-      return_url = URI.parse(session[:ext_content_return_url])
+      return_url = URI.parse(return_url)
       url.host.should == return_url.host
       url.port.should == return_url.port
       url.path.should == return_url.path
@@ -239,6 +241,11 @@ describe CourseController do
       session[:ext_content_return_url] = "http://example.com/address?with=query"
       post :return_to_lms, get_launch_params.merge!({ :id => @c.id })
       response.header["Location"].count("?").should == 1
+    end
+
+    it "clears the session before returning control" do
+      post :return_to_lms, get_launch_params.merge!({ :id => @c.id })
+      get_session_map.each { |k,v| session[k].should be_nil }
     end
 
   end
